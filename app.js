@@ -13,9 +13,12 @@ const NotFoundError = require('./errors/NotFoundError');
 
 const app = express();
 
-const { PORT = 3000 } = process.env;
+const {
+  PORT = 3000,
+  MONGO_URL = 'mongodb://localhost:27017/bitfilmsdb',
+} = process.env;
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
