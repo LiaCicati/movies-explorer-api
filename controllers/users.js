@@ -29,7 +29,7 @@ const createUser = (req, res, next) => {
   const {
     name, email, password,
   } = req.body;
-  if (!email || !password) { throw new BadRequestError('Не предоставлены email или пароль'); }
+  if (!email || !password || !name) { throw new BadRequestError('Не предоставлены email, имя или пароль'); }
   User.findOne({ email })
     .then((user) => {
       if (user) {
