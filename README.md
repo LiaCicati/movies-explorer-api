@@ -1,9 +1,14 @@
 # movies-explorer-api
 
-Репозиторий для приложения проекта `Movies Explorer`
+Backend дипломного проекта `Movies Explorer`
   
-  - ### REST API :
+  - ### API :
   <https://api.movies-explorer-lya.students.nomoredomains.monster>
+  <https://movies-explorer-lya.students.nomoredomains.monster/api/>
 
 - ### Публичный IP:
 ### 84.201.180.99
+
+| Имя        | Email                |
+| ---------- | -------------------- |
+| Чикати Лиа | LiaCicati@yandex.com |
