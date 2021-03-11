@@ -64,14 +64,9 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-const logout = (req, res) => {
-  res.clearCookie('jwt').send({ success: true });
-};
-
 module.exports = {
   getUser,
   updateUser,
   login,
   createUser,
-  logout,
 };
