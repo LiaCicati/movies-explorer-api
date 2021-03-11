@@ -4,6 +4,7 @@ Backend дипломного проекта `Movies Explorer`
   
   - ### API :
   <https://api.movies-explorer-lya.students.nomoredomains.monster>
+  
   <https://movies-explorer-lya.students.nomoredomains.monster/api/>
 
 - ### Публичный IP:
