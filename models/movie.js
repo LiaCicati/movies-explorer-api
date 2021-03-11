@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const BadRequestError = require('../errors/BadRequestError');
+
+const validatorURL = (url) => {
+  if (!validator.isURL(url)) {
+    throw new BadRequestError('Введён неверный формат ссылки');
+  }
+  return url;
+};
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -25,32 +33,17 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    validate: {
-      validator(url) {
-        return validator.isURL(url);
-      },
-      message: 'Введён неверный формат ссылки',
-    },
+    validate: validatorURL,
   },
   trailer: {
     type: String,
     required: true,
-    validate: {
-      validator(url) {
-        return validator.isURL(url);
-      },
-      message: 'Введён неверный формат ссылки',
-    },
+    validate: validatorURL,
   },
   thumbnail: {
     type: String,
     required: true,
-    validate: {
-      validator(url) {
-        return validator.isURL(url);
-      },
-      message: 'Введён неверный формат ссылки',
-    },
+    validate: validatorURL,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
