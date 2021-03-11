@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -10,6 +11,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./routes/index');
 const errorHandler = require('./middlewares/errorHandler');
 const NotFoundError = require('./errors/NotFoundError');
+const rateLimiter = require('./middlewares/rateLimit');
 
 const app = express();
 
@@ -29,6 +31,9 @@ app.use(cors());
 
 app.use(express.json());
 app.use(requestLogger);
+
+app.use(helmet());
+app.use(rateLimiter);
 
 app.use(routes);
 
