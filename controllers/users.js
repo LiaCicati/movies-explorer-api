@@ -11,40 +11,55 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(() => { throw new NotFoundError('Пользователь не найден'); })
+    .orFail(() => {
+      throw new NotFoundError('Пользователь не найден');
+    })
     .then((user) => res.send(user))
     .catch(next);
 };
 
 const updateUser = (req, res, next) => {
   const { email, name } = req.body;
-  User.findByIdAndUpdate(req.user._id, { email, name }, { new: true })
-    .then((user) => {
-      res.send(user);
-    })
-    .catch(next);
+  User.findByIdAndUpdate(
+    req.user._id,
+    { email, name },
+    { new: true, runValidators: true },
+  ).orFail(() => NotFoundError('Пользователь не найден'))
+    .then((user) => res.send(user))
+    .catch((err) => {
+      if (err.code === 11000) {
+        next(new ConflictError('Пользователь с таким email адресом уже существует'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const createUser = (req, res, next) => {
-  const {
-    name, email, password,
-  } = req.body;
-  if (!email || !password || !name) { throw new BadRequestError('Не предоставлены email, имя или пароль'); }
+  const { name, email, password } = req.body;
+  if (!email || !password || !name) {
+    throw new BadRequestError('Не предоставлены email, имя или пароль');
+  }
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        throw new ConflictError('Пользователь с таким email адресом уже зарегистрирован');
+        throw new ConflictError(
+          'Пользователь с таким email адресом уже зарегистрирован',
+        );
       }
       return bcrypt.hash(password, 10);
     })
     .then((hash) => User.create({
-      name, email, password: hash,
-    })
-      .then(({ _id }) => {
-        res.status(200).send({
-          _id, email, name,
-        });
-      }))
+      name,
+      email,
+      password: hash,
+    }).then(({ _id }) => {
+      res.status(200).send({
+        _id,
+        email,
+        name,
+      });
+    }))
     .catch(next);
 };
 
